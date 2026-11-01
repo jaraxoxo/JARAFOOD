@@ -95,9 +95,12 @@ var SEED=[
 {id:4,name:'แกงเขียวหวานไก่',emoji:'🍛',cat:'ซุป/แกง',time:40,serves:4,level:'ปานกลาง',ing:'น่องไก่หั่นชิ้น 400 กรัม\nพริกแกงเขียวหวาน 3 ช้อนโต๊ะ\nกะทิ 2 ถ้วย\nมะเขือพวง โหระพา\nน้ำปลา น้ำตาลปี๊บ',steps:'ผัดพริกแกงกับกะทิข้นจนหอมแตกมัน\nใส่ไก่ผัดจนสุก\nเติมกะทิที่เหลือ ใส่มะเขือ\nปรุงรส ใส่โหระพา ปิดไฟ'},
 {id:5,name:'ข้าวเหนียวมะม่วง',emoji:'🥭',cat:'ของหวาน',time:45,serves:2,level:'ปานกลาง',ing:'ข้าวเหนียว 1 ถ้วย\nกะทิ 1 ถ้วย\nน้ำตาลทราย 3 ช้อนโต๊ะ\nเกลือ 1/2 ช้อนชา\nมะม่วงสุก 2 ลูก',steps:'แช่ข้าวเหนียว 4 ชั่วโมง แล้วนึ่งจนสุก\nอุ่นกะทิกับน้ำตาลและเกลือ\nคลุกข้าวเหนียวกับกะทิ พักให้ซึม\nเสิร์ฟกับมะม่วงหั่นชิ้น ราดกะทิ'},
 {id:6,name:'ไข่เจียวฟูๆ',emoji:'🍳',cat:'จานหลัก',time:8,serves:1,level:'ง่าย',ing:'ไข่ไก่ 3 ฟอง\nน้ำปลา 1 ช้อนชา\nน้ำมะนาว 1/2 ช้อนชา\nน้ำมันสำหรับทอด',steps:'ตีไข่กับน้ำปลาและมะนาวให้ขึ้นฟู\nตั้งน้ำมันให้ร้อนจัด\nเทไข่ลงกระทะ ทอดจนสองด้านเหลืองกรอบ'}];
-var KEY='recipes_v1',recipes,role='guest',loggedIn=false,cat='ทั้งหมด';
-function load(){try{var s=localStorage.getItem(KEY);if(s){recipes=JSON.parse(s);return}}catch(e){}recipes=SEED.slice()}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(recipes));return true}catch(e){return false}}
+var recipes=[],loading=true,loggedIn=false,cat='ทั้งหมด',welcomed=false;
+
+function onRecipes(l){recipes=l;loading=false;render()}
+function onDbError(e){loading=false;$('grid').innerHTML='<div class="empty">⚠️ โหลดข้อมูลไม่ได้ — ตรวจสอบว่าเปิด Firestore และตั้ง Rules แล้ว<br><small>'+esc(e.message)+'</small></div>'}
+function onAuthChange(u){loggedIn=!!u;render();if(!u&&!welcomed)loginModal();welcomed=true}
+function seedAll(){DB.seed(SEED).then(function(){toast('📥 นำเข้าสูตรตัวอย่างแล้ว')}).catch(function(e){toast('⚠️ '+e.message)})}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function $(id){return document.getElementById(id)}
 function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200)}
@@ -116,14 +119,14 @@ function closeLb(){var o=$('lb');if(o)o.remove()}
 function renderThumbs(){var t=$('f_thumbs');if(!t)return;t.innerHTML=tmpImgs.map(function(s,i){return '<div class="th"><img src="'+s+'" onclick="previewTmp('+i+')" alt=""><button title="ลบรูป" onclick="rmImg('+i+')">✕</button></div>'}).join('')}
 function rmImg(i){tmpImgs.splice(i,1);renderThumbs()}
 function addFiles(fs){Array.prototype.forEach.call(fs,function(f){if(f&&f.type.indexOf('image/')===0)addFile(f)})}
-function addFile(f){if(tmpImgs===null)return;if(tmpImgs.length>=6){toast('ใส่ได้สูงสุด 6 รูป');return}var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){if(tmpImgs===null||tmpImgs.length>=6)return;var s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);tmpImgs.push(c.toDataURL('image/jpeg',.78));renderThumbs()};im.onerror=function(){toast('อ่านไฟล์รูปไม่ได้')};im.src=fr.result};fr.readAsDataURL(f)}
+function addFile(f){if(tmpImgs===null)return;if(tmpImgs.length>=4){toast('ใส่ได้สูงสุด 4 รูป');return}var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){if(tmpImgs===null||tmpImgs.length>=4)return;var s=Math.min(1,800/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);tmpImgs.push(c.toDataURL('image/jpeg',.7));renderThumbs()};im.onerror=function(){toast('อ่านไฟล์รูปไม่ได้')};im.src=fr.result};fr.readAsDataURL(f)}
 function setupDrop(){var d=$('drop');if(!d)return;['dragenter','dragover'].forEach(function(n){d.addEventListener(n,function(e){e.preventDefault();d.classList.add('on')})});['dragleave','drop'].forEach(function(n){d.addEventListener(n,function(e){e.preventDefault();d.classList.remove('on');if(n==='drop')addFiles(e.dataTransfer.files)})})}
 function render(){
   $('chips').innerHTML=CATS.map(function(c){return '<button class="chip'+(c===cat?' on':'')+'" onclick="setCat(\''+c+'\')">'+c+'</button>'}).join(' ');
   var q=$('q').value.trim().toLowerCase();
   var list=recipes.filter(function(r){return(cat==='ทั้งหมด'||r.cat===cat)&&(!q||r.name.toLowerCase().indexOf(q)>-1)});
   $('grid').innerHTML=list.length?list.map(function(r,i){
-    return '<div class="card" style="animation-delay:'+(i*60)+'ms" onclick="view('+r.id+')">'+picHtml(r)+''+(loggedIn?'<div class="acts"><button title="แก้ไข" onclick="event.stopPropagation();openForm('+r.id+')">✏️</button><button title="ลบ" onclick="event.stopPropagation();del('+r.id+')">🗑️</button></div>':'')+'<div class="info"><h3>'+esc(r.name)+'</h3><div class="meta">⏱ '+r.time+' นาที · 👥 '+r.serves+' ที่ · '+esc(r.level)+'</div></div></div>'}).join(''):'<div class="empty">ไม่พบเมนูที่ค้นหา 🍽️</div>';
+    return '<div class="card" style="animation-delay:'+(i*60)+'ms" onclick="view('+r.id+')">'+picHtml(r)+''+(loggedIn?'<div class="acts"><button title="แก้ไข" onclick="event.stopPropagation();openForm('+r.id+')">✏️</button><button title="ลบ" onclick="event.stopPropagation();del('+r.id+')">🗑️</button></div>':'')+'<div class="info"><h3>'+esc(r.name)+'</h3><div class="meta">⏱ '+r.time+' นาที · 👥 '+r.serves+' ที่ · '+esc(r.level)+'</div></div></div>'}).join(''):'<div class="empty">'+(loading?'กำลังโหลดสูตร... 🍳':(!recipes.length?(loggedIn?'ยังไม่มีสูตรในระบบ<br><br><button class="btn" onclick="seedAll()">📥 นำเข้าสูตรตัวอย่าง</button>':'ยังไม่มีสูตรในระบบ 🍽️'):'ไม่พบเมนูที่ค้นหา 🍽️'))+'</div>';
   $('addBtn').hidden=!loggedIn;$('role').hidden=false;$('role').textContent=loggedIn?'👨‍🍳 ADMIN':'👀 Guest';
   $('authBtn').textContent=loggedIn?'ออกจากระบบ':'เข้าสู่ระบบ';
 }
@@ -134,36 +137,60 @@ function view(id){
 }
 function openForm(id){
   var r=id?recipes.find(function(x){return x.id===id}):{name:'',emoji:'🍽️',cat:'จานหลัก',time:15,serves:2,level:'ง่าย',ing:'',steps:''};
-  modal('<h2>'+(id?'✏️ แก้ไขสูตร':'➕ เพิ่มสูตรใหม่')+'</h2><div class="two"><div><label>ชื่อเมนู</label><input id="f_name" value="'+esc(r.name)+'"></div><div><label>อีโมจิ</label><input id="f_emoji" value="'+esc(r.emoji)+'" maxlength="8"></div></div><div class="two"><div><label>หมวดหมู่</label><select id="f_cat">'+CATS.slice(1).map(function(c){return '<option'+(c===r.cat?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div><div><label>ระดับ</label><select id="f_level">'+['ง่าย','ปานกลาง','ยาก'].map(function(c){return '<option'+(c===r.level?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div></div><div class="two"><div><label>เวลา (นาที)</label><input id="f_time" type="number" min="1" value="'+r.time+'"></div><div><label>จำนวนที่</label><input id="f_serves" type="number" min="1" value="'+r.serves+'"></div></div><label>ส่วนผสม (บรรทัดละ 1 อย่าง)</label><textarea id="f_ing" rows="4">'+esc(r.ing)+'</textarea><label>วิธีทำ (บรรทัดละ 1 ขั้นตอน)</label><textarea id="f_steps" rows="4">'+esc(r.steps)+'</textarea><label>📷 รูปภาพ (สูงสุด 6 รูป)</label><label class="drop" id="drop">คลิกเลือกรูป · ลากมาวาง · หรือกด <b>Ctrl+V</b> เพื่อวางรูปได้ทันที<input type="file" accept="image/*" multiple hidden onchange="addFiles(this.files);this.value=null"></label><div class="gal" id="f_thumbs"></div><div class="err" id="f_err"></div><div class="row"><button class="btn ghost" onclick="closeM()">ยกเลิก</button><button class="btn" onclick="saveForm('+(id||0)+')">💾 บันทึก</button></div>');tmpImgs=(r.imgs||[]).slice();setupDrop();renderThumbs();
+  modal('<h2>'+(id?'✏️ แก้ไขสูตร':'➕ เพิ่มสูตรใหม่')+'</h2><div class="two"><div><label>ชื่อเมนู</label><input id="f_name" value="'+esc(r.name)+'"></div><div><label>อีโมจิ</label><input id="f_emoji" value="'+esc(r.emoji)+'" maxlength="8"></div></div><div class="two"><div><label>หมวดหมู่</label><select id="f_cat">'+CATS.slice(1).map(function(c){return '<option'+(c===r.cat?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div><div><label>ระดับ</label><select id="f_level">'+['ง่าย','ปานกลาง','ยาก'].map(function(c){return '<option'+(c===r.level?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div></div><div class="two"><div><label>เวลา (นาที)</label><input id="f_time" type="number" min="1" value="'+r.time+'"></div><div><label>จำนวนที่</label><input id="f_serves" type="number" min="1" value="'+r.serves+'"></div></div><label>ส่วนผสม (บรรทัดละ 1 อย่าง)</label><textarea id="f_ing" rows="4">'+esc(r.ing)+'</textarea><label>วิธีทำ (บรรทัดละ 1 ขั้นตอน)</label><textarea id="f_steps" rows="4">'+esc(r.steps)+'</textarea><label>📷 รูปภาพ (สูงสุด 4 รูป)</label><label class="drop" id="drop">คลิกเลือกรูป · ลากมาวาง · หรือกด <b>Ctrl+V</b> เพื่อวางรูปได้ทันที<input type="file" accept="image/*" multiple hidden onchange="addFiles(this.files);this.value=null"></label><div class="gal" id="f_thumbs"></div><div class="err" id="f_err"></div><div class="row"><button class="btn ghost" onclick="closeM()">ยกเลิก</button><button class="btn" onclick="saveForm('+(id||0)+')">💾 บันทึก</button></div>');tmpImgs=(r.imgs||[]).slice();setupDrop();renderThumbs();
 }
 function saveForm(id){
   var d={name:$('f_name').value.trim(),emoji:$('f_emoji').value.trim()||'🍽️',cat:$('f_cat').value,level:$('f_level').value,time:+$('f_time').value||1,serves:+$('f_serves').value||1,ing:$('f_ing').value.trim(),steps:$('f_steps').value.trim(),imgs:(tmpImgs||[]).slice()};
   if(!d.name||!d.ing||!d.steps){$('f_err').textContent='กรุณากรอกชื่อ ส่วนผสม และวิธีทำให้ครบ';return}
-  if(id){var r=recipes.find(function(x){return x.id===id});Object.assign(r,d)}
-  else{d.id=Date.now();recipes.unshift(d)}
-  var ok=save();closeM();render();toast(ok?(id?'✅ แก้ไขสูตรแล้ว':'🎉 เพิ่มสูตรใหม่แล้ว'):'⚠️ บันทึกไม่ได้ พื้นที่เบราว์เซอร์เต็ม ลองลดจำนวนรูป');
+  d.id=id||Date.now();
+  if(JSON.stringify(d).length>950000){$('f_err').textContent='รูปใหญ่เกินไป (เกิน 1MB ต่อสูตร) ลองลดจำนวนรูป';return}
+  var bt=document.querySelector('.modal .row .btn:last-child');if(bt)bt.disabled=true;
+  DB.save(d).then(function(){closeM();toast(id?'✅ แก้ไขสูตรแล้ว':'🎉 เพิ่มสูตรใหม่แล้ว')}).catch(function(e){if(bt)bt.disabled=false;$('f_err').textContent='บันทึกไม่ได้: '+e.message});
 }
 function del(id){
   var r=recipes.find(function(x){return x.id===id});
   modal('<div class="big">🗑️</div><h2 class="center">ลบสูตรนี้?</h2><p class="center">“'+esc(r.name)+'” จะถูกลบถาวร</p><div class="row"><button class="btn ghost" onclick="closeM()">ยกเลิก</button><button class="btn warn" onclick="doDel('+id+')">ลบเลย</button></div>');
 }
-function doDel(id){recipes=recipes.filter(function(x){return x.id!==id});save();closeM();render();toast('🗑️ ลบสูตรแล้ว')}
+function doDel(id){DB.del(id).then(function(){closeM();toast('🗑️ ลบสูตรแล้ว')}).catch(function(e){toast('⚠️ ลบไม่ได้: '+e.message)})}
 function loginModal(){
   modal('<div class="big">🍳</div><h2 class="center">ยินดีต้อนรับสู่ครัวแจกสูตร</h2><p class="center meta">เลือกวิธีเข้าใช้งาน</p><div class="row"><button class="btn" onclick="adminForm()">👨‍🍳 เข้าสู่ระบบ Admin</button><button class="btn ghost" onclick="guest()">👀 เข้าชมแบบ Guest</button></div>');
 }
 function adminForm(){
-  modal('<h2>👨‍🍳 เข้าสู่ระบบ Admin</h2><label>ชื่อผู้ใช้</label><input id="u" autocomplete="off"><label>รหัสผ่าน</label><input id="p" type="password"><div class="err" id="le"></div><div class="row"><button class="btn ghost" onclick="loginModal()">← กลับ</button><button class="btn" onclick="doLogin()">เข้าสู่ระบบ</button></div><div class="hint">ตัวอย่าง: admin / 1234 (เดโม่ — ควรเปลี่ยนก่อนใช้งานจริง)</div>');
+  modal('<h2>👨‍🍳 เข้าสู่ระบบ Admin</h2><label>อีเมล</label><input id="u" type="email" autocomplete="username"><label>รหัสผ่าน</label><input id="p" type="password" autocomplete="current-password"><div class="err" id="le"></div><div class="row"><button class="btn ghost" onclick="loginModal()">← กลับ</button><button class="btn" onclick="doLogin()">เข้าสู่ระบบ</button></div><div class="hint">บัญชี Admin สร้างใน Firebase Console › Authentication</div>');
   $('p').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin()});
 }
 function doLogin(){
-  if($('u').value.trim()==='admin'&&$('p').value==='1234'){loggedIn=true;closeM();render();toast('👨‍🍳 ยินดีต้อนรับ Admin')}
-  else $('le').textContent='ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+  $('le').textContent='';
+  DB.login($('u').value.trim(),$('p').value).then(function(){closeM();toast('👨‍🍳 ยินดีต้อนรับ Admin')}).catch(function(){$('le').textContent='อีเมลหรือรหัสผ่านไม่ถูกต้อง'});
 }
-function guest(){loggedIn=false;closeM();render();toast('👀 เข้าชมแบบ Guest')}
-$('authBtn').onclick=function(){if(loggedIn){loggedIn=false;render();toast('ออกจากระบบแล้ว')}else loginModal()};
+function guest(){closeM();toast('👀 เข้าชมแบบ Guest')}
+$('authBtn').onclick=function(){if(loggedIn){DB.logout().then(function(){toast('ออกจากระบบแล้ว')})}else loginModal()};
 $('addBtn').onclick=function(){openForm(0)};
 $('q').addEventListener('input',render);
-load();render();loginModal();
+render();
+</script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore,collection,doc,setDoc,deleteDoc,onSnapshot,query,orderBy,writeBatch} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+const app=initializeApp({
+  apiKey:"AIzaSyAP1lZjlBCKDLRlA7MmoXwj08nmW8-Wc-0",
+  authDomain:"jarafood-acee2.firebaseapp.com",
+  projectId:"jarafood-acee2",
+  storageBucket:"jarafood-acee2.firebasestorage.app",
+  messagingSenderId:"967894373543",
+  appId:"1:967894373543:web:3096bf636ca9c6b4227782"
+});
+const db=getFirestore(app),auth=getAuth(app);
+window.DB={
+  login:(e,p)=>signInWithEmailAndPassword(auth,e,p),
+  logout:()=>signOut(auth),
+  save:d=>setDoc(doc(db,'recipes',String(d.id)),d),
+  del:id=>deleteDoc(doc(db,'recipes',String(id))),
+  seed:list=>{const b=writeBatch(db);list.forEach(r=>b.set(doc(db,'recipes',String(r.id)),r));return b.commit()}
+};
+onAuthStateChanged(auth,u=>window.onAuthChange(u));
+onSnapshot(query(collection(db,'recipes'),orderBy('id','desc')),s=>window.onRecipes(s.docs.map(d=>d.data())),e=>window.onDbError(e));
 </script>
 </body>
 </html>
