@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ครัวแจกสูตร</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8ef;--card:#fff;--ink:#3a2a20;--muted:#8a7565;--accent:#e4572e;--accent2:#f4a259;--line:#f0e0cc;--shadow:0 8px 24px rgba(120,70,30,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1612;--card:#2a201a;--ink:#f6e9da;--muted:#b9a592;--line:#3d2e24;--shadow:0 8px 24px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1612;--card:#2a201a;--ink:#f6e9da;--muted:#b9a592;--line:#3d2e24;--shadow:0 8px 24px rgba(0,0,0,.4);color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Prompt','Sarabun',system-ui,sans-serif;min-height:100vh}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--bg);border-bottom:2px dashed var(--line);flex-wrap:wrap}
+.logo{font-size:22px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px;margin-right:auto}
+.logo span{display:inline-block;animation:wob 3s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.btn{font:inherit;font-weight:500;border:0;border-radius:999px;padding:9px 18px;cursor:pointer;background:var(--accent);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(228,87,46,.35)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost:hover{box-shadow:none;border-color:var(--accent)}
+.btn.warn{background:#c0392b}
+.badge{font-size:13px;padding:5px 12px;border-radius:999px;background:var(--accent2);color:#3a2a20;font-weight:600}
+.hero{position:relative;overflow:hidden;text-align:center;padding:42px 18px 26px}
+.hero h1{margin:0 0 6px;font-size:clamp(26px,5vw,40px)}
+.hero p{margin:0;color:var(--muted)}
+.fl{position:absolute;font-size:30px;opacity:.5;animation:fly 9s linear infinite;pointer-events:none}
+@keyframes fly{0%{transform:translateY(40px) rotate(0);opacity:0}15%{opacity:.5}100%{transform:translateY(-120px) rotate(40deg);opacity:0}}
+.tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:0 18px 8px}
+.tools input{font:inherit;padding:10px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);min-width:220px}
+.chip{font:inherit;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.chip.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding:18px;max-width:1100px;margin:0 auto}
+.card{position:relative;aspect-ratio:1/1;border-radius:22px;background:var(--card);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:transform .2s;animation:pop .4s both}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(14px)}}
+.card:hover{transform:translateY(-6px) rotate(-1deg)}
+.card .pic{flex:1;display:flex;align-items:center;justify-content:center;font-size:72px;transition:transform .25s}
+.card:hover .pic{transform:scale(1.18) rotate(6deg)}
+.card .info{padding:10px 14px 14px;background:var(--card)}
+.card h3{margin:0 0 4px;font-size:16px}
+.meta{font-size:12.5px;color:var(--muted)}
+.acts{position:absolute;top:8px;right:8px;display:flex;gap:6px}
+.acts button{border:0;width:32px;height:32px;border-radius:50%;cursor:pointer;background:rgba(255,255,255,.9);font-size:15px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px}
+.ov{position:fixed;inset:0;z-index:20;background:rgba(30,15,5,.55);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.modal{background:var(--card);border-radius:24px;max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:26px;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:up .3s cubic-bezier(.2,1.3,.4,1);position:relative}
+@keyframes up{from{opacity:0;transform:translateY(30px) scale(.94)}}
+.modal h2{margin:0 0 6px}
+.x{position:absolute;top:12px;right:14px;border:0;background:none;font-size:22px;cursor:pointer;color:var(--muted)}
+.big{font-size:64px;text-align:center}
+.center{text-align:center}
+.row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.row .btn{flex:1}
+label{display:block;font-size:14px;margin:12px 0 4px;color:var(--muted)}
+.modal input,.modal select,.modal textarea{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal ul,.modal ol{padding-left:22px;line-height:1.7}
+.tag{display:inline-block;font-size:13px;padding:4px 10px;border-radius:999px;background:var(--bg);margin:2px 4px 2px 0}
+.hint{font-size:13px;color:var(--muted);margin-top:10px}
+.err{color:#c0392b;font-size:13px;min-height:18px}
+.card .pic{position:relative;overflow:hidden}.card .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s}.card:hover .pic.has{transform:none}.card:hover .pic.has img{transform:scale(1.08)}.cnt{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;padding:3px 9px;border-radius:999px}
+.hero-img{width:100%;max-height:260px;object-fit:cover;border-radius:16px;cursor:zoom-in;display:block;margin-bottom:10px}
+.gal{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.gal img{width:84px;height:84px;object-fit:cover;border-radius:12px;cursor:zoom-in;transition:transform .15s}.gal img:hover{transform:scale(1.06)}
+.th{position:relative}.th button{position:absolute;top:-6px;right:-6px;border:0;width:22px;height:22px;border-radius:50%;background:#c0392b;color:#fff;cursor:pointer;font-size:11px;padding:0}
+.drop{display:block;border:2px dashed var(--line);border-radius:14px;padding:16px;text-align:center;color:var(--muted);cursor:pointer;margin:4px 0 0;transition:all .15s}.drop:hover,.drop.on{border-color:var(--accent);background:var(--bg);color:var(--ink)}
+.lb{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;animation:fade .2s}.lb img{max-width:92vw;max-height:84vh;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.5)}.lb .x{color:#fff;font-size:30px;top:16px;right:20px}.lb .nv{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(255,255,255,.2);color:#fff;font-size:34px;width:48px;height:48px;border-radius:50%;cursor:pointer}.lb .l{left:14px}.lb .r{right:14px}.lbc{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#fff;font-size:14px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,80px);background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:999px;z-index:40;transition:transform .3s;font-weight:500}
+#toast.show{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span>🍳</span> ครัวแจกสูตร</div>
+  <span class="badge" id="role" hidden></span>
+  <button class="btn" id="addBtn" hidden>＋ เพิ่มสูตร</button>
+  <button class="btn ghost" id="authBtn">เข้าสู่ระบบ</button>
+</header>
+<section class="hero">
+  <span class="fl" style="left:8%;animation-delay:0s">🍅</span><span class="fl" style="left:25%;animation-delay:2s">🧄</span><span class="fl" style="left:55%;animation-delay:4s">🌶️</span><span class="fl" style="left:75%;animation-delay:1s">🥬</span><span class="fl" style="left:90%;animation-delay:3s">🍋</span>
+  <h1>วันนี้อยากทำเมนูอะไร?</h1>
+  <p>รวมสูตรอาหารอร่อย ทำตามง่าย แจกฟรีทุกเมนู</p>
+</section>
+<div class="tools"><input id="q" placeholder="🔎 ค้นหาเมนู..."><span id="chips"></span></div>
+<main class="grid" id="grid"></main>
+<div id="toast"></div>
+<script>
+var CATS=['ทั้งหมด','จานหลัก','ซุป/แกง','ยำ/สลัด','ของหวาน'];
+var COLORS=['#ffd9b3','#ffc9c0','#d9f0c2','#fff0a8','#cfe8ff','#f1d4ff'];
+var SEED=[
+{id:1,name:'ผัดกะเพราหมูสับ',emoji:'🍳',cat:'จานหลัก',time:15,serves:1,level:'ง่าย',ing:'หมูสับ 150 กรัม\nใบกะเพรา 1 กำมือ\nพริก-กระเทียมโขลก 3 ช้อนโต๊ะ\nซอสหอยนางรม 1 ช้อนโต๊ะ\nน้ำตาล 1 ช้อนชา\nไข่ดาว 1 ฟอง',steps:'ตั้งกระทะ ใส่น้ำมัน ผัดพริกกระเทียมให้หอม\nใส่หมูสับผัดจนสุก\nปรุงรสด้วยซอสหอยนางรมและน้ำตาล\nใส่ใบกะเพรา ผัดพอสลด ตักเสิร์ฟพร้อมไข่ดาว'},
+{id:2,name:'ต้มยำกุ้ง',emoji:'🍲',cat:'ซุป/แกง',time:25,serves:3,level:'ปานกลาง',ing:'กุ้งสด 300 กรัม\nข่า ตะไคร้ ใบมะกรูด\nเห็ดฟาง 100 กรัม\nพริกขี้หนู 5 เม็ด\nน้ำพริกเผา 2 ช้อนโต๊ะ\nน้ำมะนาว 3 ช้อนโต๊ะ',steps:'ต้มน้ำใส่ข่า ตะไคร้ ใบมะกรูดจนหอม\nใส่เห็ดและน้ำพริกเผา\nใส่กุ้ง ต้มจนสุก\nปิดไฟ ปรุงรสด้วยน้ำปลาและมะนาว'},
+{id:3,name:'ส้มตำไทย',emoji:'🥗',cat:'ยำ/สลัด',time:10,serves:1,level:'ง่าย',ing:'มะละกอดิบสับ 1 ถ้วย\nมะเขือเทศ 3 ลูก\nถั่วฝักยาว 2 ฝัก\nถั่วลิสงคั่ว 1 ช้อนโต๊ะ\nน้ำปลา มะนาว น้ำตาลปี๊บ',steps:'โขลกพริกกับกระเทียมเบาๆ\nใส่น้ำปลา มะนาว น้ำตาล คนให้เข้ากัน\nใส่มะละกอ มะเขือเทศ ถั่วฝักยาว โขลกเบาๆ\nโรยถั่วลิสง เสิร์ฟทันที'},
+{id:4,name:'แกงเขียวหวานไก่',emoji:'🍛',cat:'ซุป/แกง',time:40,serves:4,level:'ปานกลาง',ing:'น่องไก่หั่นชิ้น 400 กรัม\nพริกแกงเขียวหวาน 3 ช้อนโต๊ะ\nกะทิ 2 ถ้วย\nมะเขือพวง โหระพา\nน้ำปลา น้ำตาลปี๊บ',steps:'ผัดพริกแกงกับกะทิข้นจนหอมแตกมัน\nใส่ไก่ผัดจนสุก\nเติมกะทิที่เหลือ ใส่มะเขือ\nปรุงรส ใส่โหระพา ปิดไฟ'},
+{id:5,name:'ข้าวเหนียวมะม่วง',emoji:'🥭',cat:'ของหวาน',time:45,serves:2,level:'ปานกลาง',ing:'ข้าวเหนียว 1 ถ้วย\nกะทิ 1 ถ้วย\nน้ำตาลทราย 3 ช้อนโต๊ะ\nเกลือ 1/2 ช้อนชา\nมะม่วงสุก 2 ลูก',steps:'แช่ข้าวเหนียว 4 ชั่วโมง แล้วนึ่งจนสุก\nอุ่นกะทิกับน้ำตาลและเกลือ\nคลุกข้าวเหนียวกับกะทิ พักให้ซึม\nเสิร์ฟกับมะม่วงหั่นชิ้น ราดกะทิ'},
+{id:6,name:'ไข่เจียวฟูๆ',emoji:'🍳',cat:'จานหลัก',time:8,serves:1,level:'ง่าย',ing:'ไข่ไก่ 3 ฟอง\nน้ำปลา 1 ช้อนชา\nน้ำมะนาว 1/2 ช้อนชา\nน้ำมันสำหรับทอด',steps:'ตีไข่กับน้ำปลาและมะนาวให้ขึ้นฟู\nตั้งน้ำมันให้ร้อนจัด\nเทไข่ลงกระทะ ทอดจนสองด้านเหลืองกรอบ'}];
+var KEY='recipes_v1',recipes,role='guest',loggedIn=false,cat='ทั้งหมด';
+function load(){try{var s=localStorage.getItem(KEY);if(s){recipes=JSON.parse(s);return}}catch(e){}recipes=SEED.slice()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(recipes));return true}catch(e){return false}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function $(id){return document.getElementById(id)}
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200)}
+function modal(html){closeM();var o=document.createElement('div');o.className='ov';o.id='ov';o.innerHTML='<div class="modal"><button class="x" onclick="closeM()">✕</button>'+html+'</div>';o.addEventListener('mousedown',function(e){if(e.target===o)closeM()});document.body.appendChild(o)}
+function closeM(){var o=$('ov');if(o)o.remove();tmpImgs=null}
+document.addEventListener('keydown',function(e){var lb=$('lb');if(e.key==='Escape'){if(lb)closeLb();else closeM()}else if(lb&&e.key==='ArrowLeft')navLb(-1);else if(lb&&e.key==='ArrowRight')navLb(1)});
+document.addEventListener('paste',function(e){if(tmpImgs===null)return;var it=(e.clipboardData||{}).items||[],got=false;for(var i=0;i<it.length;i++){if(it[i].kind==='file'&&it[i].type.indexOf('image/')===0){addFile(it[i].getAsFile());got=true}}if(got){e.preventDefault();toast('📋 วางรูปแล้ว')}});
+var tmpImgs=null,lbList=[],lbIdx=0;
+function picHtml(r){var n=r.imgs&&r.imgs.length;return '<div class="pic'+(n?' has':'')+'" style="background:'+COLORS[r.id%COLORS.length]+'">'+(n?'<img src="'+r.imgs[0]+'" alt="">'+(n>1?'<span class="cnt">📷 '+n+'</span>':''):esc(r.emoji))+'</div>'}
+function galHtml(r){var n=r.imgs&&r.imgs.length;if(!n)return '<div class="big">'+esc(r.emoji)+'</div>';return '<img class="hero-img" src="'+r.imgs[0]+'" onclick="lightbox('+r.id+',0)" alt="">'+(n>1?'<div class="gal">'+r.imgs.map(function(s,i){return '<img src="'+s+'" onclick="lightbox('+r.id+','+i+')" alt="">'}).join('')+'</div>':'')}
+function lightbox(id,i){var r=recipes.find(function(x){return x.id===id});if(!r||!r.imgs)return;lbList=r.imgs;lbIdx=i;showLb()}
+function previewTmp(i){lbList=tmpImgs;lbIdx=i;showLb()}
+function showLb(){var o=$('lb');if(!o){o=document.createElement('div');o.className='lb';o.id='lb';o.addEventListener('mousedown',function(e){if(e.target===o)closeLb()});document.body.appendChild(o)}o.innerHTML='<button class="x" onclick="closeLb()">✕</button>'+(lbList.length>1?'<button class="nv l" onclick="navLb(-1)">‹</button><button class="nv r" onclick="navLb(1)">›</button>':'')+'<img src="'+lbList[lbIdx]+'" alt=""><div class="lbc">'+(lbIdx+1)+' / '+lbList.length+'</div>'}
+function navLb(d){lbIdx=(lbIdx+d+lbList.length)%lbList.length;showLb()}
+function closeLb(){var o=$('lb');if(o)o.remove()}
+function renderThumbs(){var t=$('f_thumbs');if(!t)return;t.innerHTML=tmpImgs.map(function(s,i){return '<div class="th"><img src="'+s+'" onclick="previewTmp('+i+')" alt=""><button title="ลบรูป" onclick="rmImg('+i+')">✕</button></div>'}).join('')}
+function rmImg(i){tmpImgs.splice(i,1);renderThumbs()}
+function addFiles(fs){Array.prototype.forEach.call(fs,function(f){if(f&&f.type.indexOf('image/')===0)addFile(f)})}
+function addFile(f){if(tmpImgs===null)return;if(tmpImgs.length>=6){toast('ใส่ได้สูงสุด 6 รูป');return}var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){if(tmpImgs===null||tmpImgs.length>=6)return;var s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);tmpImgs.push(c.toDataURL('image/jpeg',.78));renderThumbs()};im.onerror=function(){toast('อ่านไฟล์รูปไม่ได้')};im.src=fr.result};fr.readAsDataURL(f)}
+function setupDrop(){var d=$('drop');if(!d)return;['dragenter','dragover'].forEach(function(n){d.addEventListener(n,function(e){e.preventDefault();d.classList.add('on')})});['dragleave','drop'].forEach(function(n){d.addEventListener(n,function(e){e.preventDefault();d.classList.remove('on');if(n==='drop')addFiles(e.dataTransfer.files)})})}
+function render(){
+  $('chips').innerHTML=CATS.map(function(c){return '<button class="chip'+(c===cat?' on':'')+'" onclick="setCat(\''+c+'\')">'+c+'</button>'}).join(' ');
+  var q=$('q').value.trim().toLowerCase();
+  var list=recipes.filter(function(r){return(cat==='ทั้งหมด'||r.cat===cat)&&(!q||r.name.toLowerCase().indexOf(q)>-1)});
+  $('grid').innerHTML=list.length?list.map(function(r,i){
+    return '<div class="card" style="animation-delay:'+(i*60)+'ms" onclick="view('+r.id+')">'+picHtml(r)+''+(loggedIn?'<div class="acts"><button title="แก้ไข" onclick="event.stopPropagation();openForm('+r.id+')">✏️</button><button title="ลบ" onclick="event.stopPropagation();del('+r.id+')">🗑️</button></div>':'')+'<div class="info"><h3>'+esc(r.name)+'</h3><div class="meta">⏱ '+r.time+' นาที · 👥 '+r.serves+' ที่ · '+esc(r.level)+'</div></div></div>'}).join(''):'<div class="empty">ไม่พบเมนูที่ค้นหา 🍽️</div>';
+  $('addBtn').hidden=!loggedIn;$('role').hidden=false;$('role').textContent=loggedIn?'👨‍🍳 ADMIN':'👀 Guest';
+  $('authBtn').textContent=loggedIn?'ออกจากระบบ':'เข้าสู่ระบบ';
+}
+function setCat(c){cat=c;render()}
+function view(id){
+  var r=recipes.find(function(x){return x.id===id});if(!r)return;
+  modal(galHtml(r)+'<h2 class="center">'+esc(r.name)+'</h2><div class="center"><span class="tag">'+esc(r.cat)+'</span><span class="tag">⏱ '+r.time+' นาที</span><span class="tag">👥 '+r.serves+' ที่</span><span class="tag">'+esc(r.level)+'</span></div><h3>🥕 ส่วนผสม</h3><ul>'+r.ing.split('\n').filter(Boolean).map(function(l){return '<li>'+esc(l)+'</li>'}).join('')+'</ul><h3>👩‍🍳 วิธีทำ</h3><ol>'+r.steps.split('\n').filter(Boolean).map(function(l){return '<li>'+esc(l)+'</li>'}).join('')+'</ol>'+(loggedIn?'<div class="row"><button class="btn ghost" onclick="openForm('+r.id+')">✏️ แก้ไข</button><button class="btn warn" onclick="del('+r.id+')">🗑️ ลบ</button></div>':''));
+}
+function openForm(id){
+  var r=id?recipes.find(function(x){return x.id===id}):{name:'',emoji:'🍽️',cat:'จานหลัก',time:15,serves:2,level:'ง่าย',ing:'',steps:''};
+  modal('<h2>'+(id?'✏️ แก้ไขสูตร':'➕ เพิ่มสูตรใหม่')+'</h2><div class="two"><div><label>ชื่อเมนู</label><input id="f_name" value="'+esc(r.name)+'"></div><div><label>อีโมจิ</label><input id="f_emoji" value="'+esc(r.emoji)+'" maxlength="8"></div></div><div class="two"><div><label>หมวดหมู่</label><select id="f_cat">'+CATS.slice(1).map(function(c){return '<option'+(c===r.cat?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div><div><label>ระดับ</label><select id="f_level">'+['ง่าย','ปานกลาง','ยาก'].map(function(c){return '<option'+(c===r.level?' selected':'')+'>'+c+'</option>'}).join('')+'</select></div></div><div class="two"><div><label>เวลา (นาที)</label><input id="f_time" type="number" min="1" value="'+r.time+'"></div><div><label>จำนวนที่</label><input id="f_serves" type="number" min="1" value="'+r.serves+'"></div></div><label>ส่วนผสม (บรรทัดละ 1 อย่าง)</label><textarea id="f_ing" rows="4">'+esc(r.ing)+'</textarea><label>วิธีทำ (บรรทัดละ 1 ขั้นตอน)</label><textarea id="f_steps" rows="4">'+esc(r.steps)+'</textarea><label>📷 รูปภาพ (สูงสุด 6 รูป)</label><label class="drop" id="drop">คลิกเลือกรูป · ลากมาวาง · หรือกด <b>Ctrl+V</b> เพื่อวางรูปได้ทันที<input type="file" accept="image/*" multiple hidden onchange="addFiles(this.files);this.value=null"></label><div class="gal" id="f_thumbs"></div><div class="err" id="f_err"></div><div class="row"><button class="btn ghost" onclick="closeM()">ยกเลิก</button><button class="btn" onclick="saveForm('+(id||0)+')">💾 บันทึก</button></div>');tmpImgs=(r.imgs||[]).slice();setupDrop();renderThumbs();
+}
+function saveForm(id){
+  var d={name:$('f_name').value.trim(),emoji:$('f_emoji').value.trim()||'🍽️',cat:$('f_cat').value,level:$('f_level').value,time:+$('f_time').value||1,serves:+$('f_serves').value||1,ing:$('f_ing').value.trim(),steps:$('f_steps').value.trim(),imgs:(tmpImgs||[]).slice()};
+  if(!d.name||!d.ing||!d.steps){$('f_err').textContent='กรุณากรอกชื่อ ส่วนผสม และวิธีทำให้ครบ';return}
+  if(id){var r=recipes.find(function(x){return x.id===id});Object.assign(r,d)}
+  else{d.id=Date.now();recipes.unshift(d)}
+  var ok=save();closeM();render();toast(ok?(id?'✅ แก้ไขสูตรแล้ว':'🎉 เพิ่มสูตรใหม่แล้ว'):'⚠️ บันทึกไม่ได้ พื้นที่เบราว์เซอร์เต็ม ลองลดจำนวนรูป');
+}
+function del(id){
+  var r=recipes.find(function(x){return x.id===id});
+  modal('<div class="big">🗑️</div><h2 class="center">ลบสูตรนี้?</h2><p class="center">“'+esc(r.name)+'” จะถูกลบถาวร</p><div class="row"><button class="btn ghost" onclick="closeM()">ยกเลิก</button><button class="btn warn" onclick="doDel('+id+')">ลบเลย</button></div>');
+}
+function doDel(id){recipes=recipes.filter(function(x){return x.id!==id});save();closeM();render();toast('🗑️ ลบสูตรแล้ว')}
+function loginModal(){
+  modal('<div class="big">🍳</div><h2 class="center">ยินดีต้อนรับสู่ครัวแจกสูตร</h2><p class="center meta">เลือกวิธีเข้าใช้งาน</p><div class="row"><button class="btn" onclick="adminForm()">👨‍🍳 เข้าสู่ระบบ Admin</button><button class="btn ghost" onclick="guest()">👀 เข้าชมแบบ Guest</button></div>');
+}
+function adminForm(){
+  modal('<h2>👨‍🍳 เข้าสู่ระบบ Admin</h2><label>ชื่อผู้ใช้</label><input id="u" autocomplete="off"><label>รหัสผ่าน</label><input id="p" type="password"><div class="err" id="le"></div><div class="row"><button class="btn ghost" onclick="loginModal()">← กลับ</button><button class="btn" onclick="doLogin()">เข้าสู่ระบบ</button></div><div class="hint">ตัวอย่าง: admin / 1234 (เดโม่ — ควรเปลี่ยนก่อนใช้งานจริง)</div>');
+  $('p').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin()});
+}
+function doLogin(){
+  if($('u').value.trim()==='admin'&&$('p').value==='1234'){loggedIn=true;closeM();render();toast('👨‍🍳 ยินดีต้อนรับ Admin')}
+  else $('le').textContent='ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+}
+function guest(){loggedIn=false;closeM();render();toast('👀 เข้าชมแบบ Guest')}
+$('authBtn').onclick=function(){if(loggedIn){loggedIn=false;render();toast('ออกจากระบบแล้ว')}else loginModal()};
+$('addBtn').onclick=function(){openForm(0)};
+$('q').addEventListener('input',render);
+load();render();loginModal();
+</script>
+</body>
+</html>
